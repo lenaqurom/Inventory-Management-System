@@ -1,3 +1,10 @@
 .vs/ 
+*.suo
+*.user
+
 bin/
 obj/
+Inventory-Management-System-with-DB/bin/
+Inventory-Management-System-with-DB/obj/
+Inventory-Management-System/bin/
+Inventory-Management-System/obj/
