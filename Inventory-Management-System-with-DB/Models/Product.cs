@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace InventoryManagementSystem.Models
 {
-    internal class Product : Item
+    public class Product : Item
     {
         public Product(string name, decimal price, int quantity) : base(name, price, quantity) { }
         public override string ToString()
