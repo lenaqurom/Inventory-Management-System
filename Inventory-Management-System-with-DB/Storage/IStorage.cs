@@ -7,7 +7,7 @@ using InventoryManagementSystem.Models;
 
 namespace InventoryManagementSystem.Storage
 {
-    internal interface IStorage
+    public interface IStorage
     {
         List<Product> LoadInventory();
         void SaveInventory(List<Product> products);

@@ -1,6 +1,7 @@
 ﻿using InventoryManagementSystem.Models;
 using InventoryManagementSystem.Management;
 using InventoryManagementSystem.Storage;
+using Microsoft.Data.SqlClient;
 
 namespace InventoryManagementSystem
 {
@@ -8,8 +9,33 @@ namespace InventoryManagementSystem
     {
         static void Main(string[] args)
         {
-            JsonStorage storage = new JsonStorage();
+            Console.WriteLine("Select the storage type:");
+            Console.WriteLine("1. MongoDB");
+            Console.WriteLine("2. SQL Server");
+            Console.WriteLine("3. JSON File");
+            Console.Write("Enter your choice: ");
+            string choice = Console.ReadLine();
+
+            IStorage storage;
+
+            switch (choice)
+            {
+                case "1":
+                    storage = new MongoStorage("mongodb+srv://lina:inventory@inventory.4zomlq5.mongodb.net/?retryWrites=true&w=majority&appName=Inventory");
+                    break;
+                case "2":
+                    storage = new SqlStorage("Server=localhost;Database=InventoryDB;Trusted_Connection=True;TrustServerCertificate=True;");
+                    break;
+                case "3":
+                    storage = new JsonStorage();
+                    break;
+                default:
+                    Console.WriteLine("Invalid choice. Exiting...");
+                    return;
+            }
+
             Inventory inventory = new Inventory(storage);
+
 
             while (true)
             {
@@ -22,8 +48,8 @@ namespace InventoryManagementSystem
                 Console.WriteLine("6. Exit");
                 Console.Write("Choose an option: ");
 
-                string choice = Console.ReadLine();
-                switch (choice)
+                string option = Console.ReadLine();
+                switch (option)
                 {
                     case "1":
                         Console.Write("Enter product name: ");

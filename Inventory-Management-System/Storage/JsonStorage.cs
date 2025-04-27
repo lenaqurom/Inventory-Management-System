@@ -11,7 +11,7 @@ namespace InventoryManagementSystem.Storage
 {
     internal class JsonStorage : IStorage
     {
-        private string filePath = "C:/Users/ZBOOK/source/repos/InventoryManagementSystem/InventoryData/inventory.json";
+        private string filePath = "C:/Users/ZBOOK/source/repos/InventoryManagementSystem/Inventory-Management-System/InventoryData/inventory.json";
 
         public List<Product> LoadInventory()
         {
