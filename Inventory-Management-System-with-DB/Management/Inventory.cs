@@ -6,24 +6,38 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using InventoryManagementSystem.Models;
 using InventoryManagementSystem.Storage;
+using Microsoft.Data.SqlClient;
 
 namespace InventoryManagementSystem.Management
 {
-    internal class Inventory : BaseInventory
+    public class Inventory : BaseInventory
     {
-        private readonly IStorage storage;
+        private readonly List<IStorage> storages = new List<IStorage>();
 
-        public Inventory(IStorage storage)
+        public Inventory(params IStorage[] storages)
         {
-            this.storage = storage;
-            products = storage.LoadInventory();
+            if(storages.Length > 0)
+            {
+                products = storages[0].LoadInventory();
+            }
+            this.storages.AddRange(storages);
         }
+
+        private void SaveAll()
+        {
+            foreach(var storage in storages)
+            {
+                storage.SaveInventory(products);
+            }
+        }
+
         public override void AddProduct(string name, decimal price, int quantity)
         {
             products.Add(new Product(name, price, quantity));
-            storage.SaveInventory(products);
+            SaveAll();
             Console.WriteLine("Product added successfully!");
         }
+
         public override void ViewProducts()
         {
             if (products.Count == 0)
@@ -61,9 +75,10 @@ namespace InventoryManagementSystem.Management
             string quantityInput = Console.ReadLine();
             if (!string.IsNullOrWhiteSpace(quantityInput) && int.TryParse(quantityInput, out int newQuantity)) product.Quantity = newQuantity;
 
-            storage.SaveInventory(products);
+            SaveAll();
             Console.WriteLine("Product updated successfully!");
         }
+
         public override void DeleteProduct(string name)
         {
             var product = products.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));
@@ -74,9 +89,10 @@ namespace InventoryManagementSystem.Management
             }
 
             products.Remove(product);
-            storage.SaveInventory(products);
+            SaveAll();
             Console.WriteLine("Product deleted successfully!");
         }
+
         public override void SearchProduct(string name)
         {
             var product = products.FirstOrDefault(x => x.Name.Equals(name, StringComparison.OrdinalIgnoreCase));

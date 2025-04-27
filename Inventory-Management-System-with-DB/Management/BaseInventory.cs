@@ -7,7 +7,7 @@ using InventoryManagementSystem.Models;
 
 namespace InventoryManagementSystem.Management
 {
-    internal abstract class BaseInventory
+    public abstract class BaseInventory
     {
         protected List<Product> products = new List<Product>();
 
